@@ -47,9 +47,6 @@ public class StarshipPresenter {
 
                         Starship starshipNew = new Starship();
 
-                        starshipNew.setName(starship.getName());
-                        starshipNew.setCargoCapacity(starship.getCargoCapacity());
-
                         List<Starship> result = new LinkedList<>();
                         result.add(starshipNew);
                         starshipsView.starshipsReady(result);
@@ -84,17 +81,9 @@ public class StarshipPresenter {
                             System.out.println(".......................................................response code");
                             return;
                         }
-
-
-                        Starship starshipNew = new Starship();
-
-                        starshipNew.setName(starshipSearchResult.getStarship().get(0).getName());
-                        starshipNew.setCargoCapacity(starshipSearchResult.getStarship().get(0).getCargoCapacity());
-
                         List<Starship> result = new LinkedList<>();
-                        result.add(starshipNew);
+                        result = starshipSearchResult.getStarship();
                         starshipsView.starshipsReady(result);
-
                     }
 
                     @Override

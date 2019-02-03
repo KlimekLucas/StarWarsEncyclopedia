@@ -85,13 +85,10 @@ public class PeoplePresenter {
                         }
 
 
-                        People personNew = new People();
-
-                        personNew.setName(peopleSearchResult.getPerson().get(0).getName());
-                        personNew.setGender(peopleSearchResult.getPerson().get(0).getGender());
-
                         List<People> result = new LinkedList<>();
-                        result.add(personNew);
+                        result = peopleSearchResult.getPerson();
+
+
                         peopleView.peopleReady(result);
 
                     }

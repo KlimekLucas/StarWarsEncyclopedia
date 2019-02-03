@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
     public void starshipsReady(List<Starship> starships) {
         textViewResult.setText("");
         for (Starship starship : starships) {
-            textViewResult.append(starship.getName());
-            textViewResult.append(starship.getCargoCapacity());
+            textViewResult.append(starship.getName()+'\n');
+            textViewResult.append(starship.getCargoCapacity()+'\n');
         }
     }
 
@@ -92,15 +92,15 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
 
     @Override
     public void peopleReady(List<People> people) {
-        System.out.println(people.size() + "sizeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-        if (people.size() == 0) {
+        System.out.println(people.size());
+        if (people.size() == 1) {
             textViewResult.setText("niema takiego numeru");
             System.out.println("niema takiego numeru");
         } else {
             textViewResult.setText("");
             for (People person : people) {
-                textViewResult.append(person.getName());
-                textViewResult.append(person.getGender());
+                textViewResult.append(person.getName()+'\n');
+                textViewResult.append(person.getGender()+'\n');
             }
         }
     }
