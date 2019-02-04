@@ -1,13 +1,10 @@
 package com.example.rottan.starwarsencyclopedia.Controller;
 
-import com.example.rottan.starwarsencyclopedia.Model.StarshipSearchResult;
 import com.example.rottan.starwarsencyclopedia.Model.Starship;
-
-import java.util.List;
+import com.example.rottan.starwarsencyclopedia.Model.StarshipSearchResult;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Url;
 
 public interface StarshipsController {
@@ -16,5 +13,5 @@ public interface StarshipsController {
     Call<Starship> getStarship();
 
     @GET
-    Call<StarshipSearchResult> getSearchedStarship (@Url String url);
+    Call<StarshipSearchResult> getSearchedStarship(@Url String url);
 }

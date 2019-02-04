@@ -10,15 +10,18 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.rottan.starwarsencyclopedia.Model.People;
+import com.example.rottan.starwarsencyclopedia.Model.Planet;
 import com.example.rottan.starwarsencyclopedia.Model.Starship;
 import com.example.rottan.starwarsencyclopedia.Presenter.PeoplePresenter;
+import com.example.rottan.starwarsencyclopedia.Presenter.PlanetPresenter;
 import com.example.rottan.starwarsencyclopedia.Presenter.StarshipPresenter;
 import com.example.rottan.starwarsencyclopedia.View.PeopleView;
+import com.example.rottan.starwarsencyclopedia.View.PlanetsView;
 import com.example.rottan.starwarsencyclopedia.View.StarshipsView;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements StarshipsView, PeopleView {
+public class MainActivity extends AppCompatActivity implements StarshipsView, PeopleView, PlanetsView {
     private static final String baseUrl = "https://swapi.co/api/";
     private TextView textViewResult;
     private EditText et2;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
         button = findViewById(R.id.button);
         final StarshipPresenter starshipPresenter = new StarshipPresenter(this);
         final PeoplePresenter peoplePresenter = new PeoplePresenter(this);
+        final PlanetPresenter planetPresenter = new PlanetPresenter(this);
 
 
         // final String name = "costam";
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
                 int categoryNo = radioGroup.indexOfChild(rbSelected) + 1;
                 String peopleURL = "https://swapi.co/api/people/?search=";
                 String starshipURL = "https://swapi.co/api/starships/?search=";
+                String planetsUrl = "https://swapi.co/api/planets/?search=";
 
                 System.out.println(categoryNo + "                   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 if (categoryNo == 2) {
@@ -67,7 +72,10 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
                     String personUrl = peopleURL + et2.getText();
                     peoplePresenter.getSearchedPerson(personUrl);
 
-                } else {
+                } else if (categoryNo == 3) {
+                    String planetUrl = planetsUrl + et2.getText();
+                    planetPresenter.getSearchedPlantet(planetUrl);
+                }else {
                     textViewResult.setText("chose category");
                 }
             }
@@ -80,8 +88,8 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
     public void starshipsReady(List<Starship> starships) {
         textViewResult.setText("");
         for (Starship starship : starships) {
-            textViewResult.append(starship.getName()+'\n');
-            textViewResult.append(starship.getCargoCapacity()+'\n');
+            textViewResult.append(starship.getName() + '\n');
+            textViewResult.append(starship.getCargoCapacity() + '\n');
         }
     }
 
@@ -99,132 +107,18 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
         } else {
             textViewResult.setText("");
             for (People person : people) {
-                textViewResult.append(person.getName()+'\n');
-                textViewResult.append(person.getGender()+'\n');
+                textViewResult.append(person.getName() + '\n');
+                textViewResult.append(person.getGender() + '\n');
             }
         }
     }
-}
-
-
-
-
-/*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        textViewResult = findViewById(R.id.tv_result);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
-
-        Call<People> call = jsonPlaceHolderApi.getPerson();
-
-        call.enqueue(new Callback<People>() {
-            @Override
-            public void onResponse(Call<People> call, Response<People> response) {
-
-                if (!response.isSuccessful()) {
-                    textViewResult.setText("Code: " + response.code());
-                    System.out.println(".......................................................response code");
-                    return;
-                }
-                People person = response.body();
-
-                textViewResult.append(person.getName());
-
-
-            }
-
-            @Override
-            public void onFailure(Call<People> call, Throwable t) {
-                textViewResult.setText(t.getMessage());
-                System.out.println(t.getMessage());
-                System.out.println("......................................on failure");
-            }
-        });
-    }
-}
-
-
-
-
-
-
-
-
-    /*
-    public TextView textViewResult;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-//        textViewResult.findViewById(R.id.tv_result);
-        System.out.println("poczatek....................................................");
-        System.out.println("poczatek....................................................");
-        System.out.println("poczatek....................................................");
-        System.out.println("poczatek....................................................");
-        System.out.println("poczatek....................................................");
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://swapi.co/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
-
-        Call <List<People>> call = jsonPlaceHolderApi.getPeople();
-
-        call.enqueue(new Callback<List<People>>() {
-            @Override
-            public void onResponse(Call<List<People>> call, Response<List<People>> response) {
-            if (!response.isSuccessful()){
-                textViewResult.setText("code " + response.code());
-                System.out.println("dupa");
-                System.out.println("dupa");
-                System.out.println("dupa");
-                System.out.println("dupa");
-                System.out.println("dupa");
-                System.out.println("failure");
-                return;
-            }
-            List<People> people = response.body();
-                System.out.println("poszło");
-                System.out.println("poszło");
-                System.out.println("poszło");
-                System.out.println("poszło");
-                System.out.println("poszło");
-                System.out.println("poszło");
-
-                for (People person : people) {
-                    String content = "";
-                    content += person.getName() + "\n";
-                    content += person.getGender();
-
-                    textViewResult.append(content);
-                    System.out.println(content);
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<People>> call, Throwable t) {
-//            textViewResult.setText(t.getMessage());
-                System.out.println("..................................................james ");
-                System.out.println(t.getMessage() + "wiadomosc jamesa");
-            }
-        });
-
-
+    public void planestReady(List<Planet> planets) {
+        textViewResult.setText("");
+        for (Planet planet : planets) {
+            textViewResult.append(planet.getName() + '\n');
+            textViewResult.append(planet.getClimate() + '\n');
+        }
     }
-
 }
-*/

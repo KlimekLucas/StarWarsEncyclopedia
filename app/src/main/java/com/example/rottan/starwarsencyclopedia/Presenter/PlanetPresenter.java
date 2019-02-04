@@ -2,10 +2,12 @@ package com.example.rottan.starwarsencyclopedia.Presenter;
 
 import com.example.rottan.starwarsencyclopedia.Controller.PlanetController;
 import com.example.rottan.starwarsencyclopedia.Model.Planet;
-import com.example.rottan.starwarsencyclopedia.Service.PeopleService;
+import com.example.rottan.starwarsencyclopedia.Model.PlanetSearchResult;
 import com.example.rottan.starwarsencyclopedia.Service.PlanetService;
-import com.example.rottan.starwarsencyclopedia.View.PeopleView;
 import com.example.rottan.starwarsencyclopedia.View.PlanetsView;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,21 +28,31 @@ public class PlanetPresenter {
         }
     }
 
-    public void getPlantet() {
+    public void getSearchedPlantet(String url) {
         planetService
                 .getAPI()
-                .getPlanet()
-                .enqueue(new Callback<Planet>() {
+                .getSearchedPlanets(url)
+                .enqueue(new Callback<PlanetSearchResult>() {
                     @Override
-                    public void onResponse(Call<Planet> call, Response<Planet> response) {
-
-
+                    public void onResponse(Call<PlanetSearchResult> call, Response<PlanetSearchResult> response) {
+                        PlanetSearchResult planetSearchResult = response.body();
+                        if (!response.isSuccessful()) {
+                            System.out.println(response.code());
+                            System.out.println(".......................................................response code");
+                            return;
+                        }
+                        List<Planet> result = new LinkedList<>();
+                        result = planetSearchResult.getPlanet();
+                        planetsView.planestReady(result);
                     }
 
                     @Override
-                    public void onFailure(Call<Planet> call, Throwable t) {
-
+                    public void onFailure(Call<PlanetSearchResult> call, Throwable t) {
+                        System.out.println(t.getMessage());
+                        System.out.println("......................................on failure");
                     }
+
                 });
+
     }
 }

@@ -1,16 +1,17 @@
 package com.example.rottan.starwarsencyclopedia.Controller;
 
-import android.telecom.Call;
-
-import com.example.rottan.starwarsencyclopedia.Model.People;
 import com.example.rottan.starwarsencyclopedia.Model.Planet;
+import com.example.rottan.starwarsencyclopedia.Model.PlanetSearchResult;
 
-import java.util.List;
-
+import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Url;
 
 public interface PlanetController {
 
     @GET("planet/1")
-    retrofit2.Call<Planet> getPlanet();
+    Call<Planet> getPlanet();
+
+    @GET
+    Call<PlanetSearchResult> getSearchedPlanets(@Url String url);
 }
