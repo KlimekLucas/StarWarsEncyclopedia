@@ -43,17 +43,12 @@ public class PeoplePresenter {
                             System.out.println(".......................................................response code");
                             return;
                         }
-
-
                         People personNew = new People();
-
                         personNew.setName(people.getName());
                         personNew.setGender(people.getGender());
-
                         List<People> result = new LinkedList<>();
                         result.add(personNew);
                         peopleView.peopleReady(result);
-
                     }
 
 
@@ -73,7 +68,6 @@ public class PeoplePresenter {
                 .getAPI()
                 .getSearchedPerson(url)
                 .enqueue(new Callback<PeopleSearchResult>() {
-
                     @Override
                     public void onResponse(Call<PeopleSearchResult> call, Response<PeopleSearchResult> response) {
                         PeopleSearchResult peopleSearchResult = response.body();
@@ -83,14 +77,9 @@ public class PeoplePresenter {
                             System.out.println(".......................................................response code");
                             return;
                         }
-
-
                         List<People> result = new LinkedList<>();
                         result = peopleSearchResult.getPerson();
-
-
                         peopleView.peopleReady(result);
-
                     }
 
                     @Override

@@ -2,6 +2,8 @@ package com.example.rottan.starwarsencyclopedia;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,13 +17,22 @@ import com.example.rottan.starwarsencyclopedia.Model.Starship;
 import com.example.rottan.starwarsencyclopedia.Presenter.PeoplePresenter;
 import com.example.rottan.starwarsencyclopedia.Presenter.PlanetPresenter;
 import com.example.rottan.starwarsencyclopedia.Presenter.StarshipPresenter;
+import com.example.rottan.starwarsencyclopedia.RecyclerView.ExampleItem;
+import com.example.rottan.starwarsencyclopedia.RecyclerView.SWAdapter;
 import com.example.rottan.starwarsencyclopedia.View.PeopleView;
 import com.example.rottan.starwarsencyclopedia.View.PlanetsView;
 import com.example.rottan.starwarsencyclopedia.View.StarshipsView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements StarshipsView, PeopleView, PlanetsView {
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+
+
     private static final String baseUrl = "https://swapi.co/api/";
     private TextView textViewResult;
     private EditText et2;
@@ -39,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         textViewResult = findViewById(R.id.tv_result);
         et2 = findViewById(R.id.editText2);
         radioGroup = findViewById(R.id.radioGroup);
@@ -50,9 +62,6 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
         final PeoplePresenter peoplePresenter = new PeoplePresenter(this);
         final PlanetPresenter planetPresenter = new PlanetPresenter(this);
 
-
-        // final String name = "costam";
-        // Maybe it's best to call it on onResume()
 
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -75,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
                 } else if (categoryNo == 3) {
                     String planetUrl = planetsUrl + et2.getText();
                     planetPresenter.getSearchedPlantet(planetUrl);
-                }else {
+                } else {
                     textViewResult.setText("chose category");
                 }
             }
@@ -86,10 +95,20 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
 
     @Override
     public void starshipsReady(List<Starship> starships) {
-        textViewResult.setText("");
+        textViewResult.setText("znaleziono " + starships.size() + "wyników");
+        ArrayList<ExampleItem> exampleItems = new ArrayList<>();
+        if (starships.size() == 0) {
+            textViewResult.setText("nic nie znaleziono");
+        }
         for (Starship starship : starships) {
-            textViewResult.append(starship.getName() + '\n');
-            textViewResult.append(starship.getCargoCapacity() + '\n');
+            exampleItems.add(new ExampleItem(R.drawable.ic_star, starship.getName(), starship.getManufacturer()));
+
+            RecyclerView recyclerView = findViewById(R.id.recyclerView);
+            recyclerView.setHasFixedSize(true);
+            layoutManager = new LinearLayoutManager(this);
+            adapter = new SWAdapter(exampleItems);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
         }
     }
 
@@ -100,25 +119,40 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
 
     @Override
     public void peopleReady(List<People> people) {
-        System.out.println(people.size());
-        if (people.size() == 1) {
-            textViewResult.setText("niema takiego numeru");
-            System.out.println("niema takiego numeru");
+        textViewResult.setText("znaleziono " + people.size() + " wyników");
+        ArrayList<ExampleItem> exampleItems = new ArrayList<>();
+        if (people.size() == 0) {
+            textViewResult.setText("nic nie zaleziono");
         } else {
-            textViewResult.setText("");
             for (People person : people) {
-                textViewResult.append(person.getName() + '\n');
-                textViewResult.append(person.getGender() + '\n');
+
+                exampleItems.add(new ExampleItem(R.drawable.ic_star, person.getName(), person.getBirtYear()));
+
+                RecyclerView recyclerView = findViewById(R.id.recyclerView);
+                recyclerView.setHasFixedSize(true);
+                layoutManager = new LinearLayoutManager(this);
+                adapter = new SWAdapter(exampleItems);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter);
             }
         }
     }
 
     @Override
     public void planestReady(List<Planet> planets) {
-        textViewResult.setText("");
+        ArrayList<ExampleItem> exampleItems = new ArrayList<>();
+        textViewResult.setText("znaleziono " + planets.size() + " wyników");
+        if (planets.size() == 0) {
+            textViewResult.setText("nic nie znaleziono");
+        }
         for (Planet planet : planets) {
-            textViewResult.append(planet.getName() + '\n');
-            textViewResult.append(planet.getClimate() + '\n');
+            exampleItems.add(new ExampleItem(R.drawable.ic_star, planet.getName(), planet.getTerrain()));
+            RecyclerView recyclerView = findViewById(R.id.recyclerView);
+            recyclerView.setHasFixedSize(true);
+            layoutManager = new LinearLayoutManager(this);
+            adapter = new SWAdapter(exampleItems);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
         }
     }
 }
