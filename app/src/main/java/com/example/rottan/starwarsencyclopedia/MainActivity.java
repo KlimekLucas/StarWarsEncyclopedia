@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-
+    ArrayList<ExampleItem> exampleItems = new ArrayList<>();
 
     private static final String baseUrl = "https://swapi.co/api/";
     private TextView textViewResult;
@@ -49,6 +49,14 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        adapter = new SWAdapter(exampleItems);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
 
         textViewResult = findViewById(R.id.tv_result);
@@ -73,10 +81,10 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
                 String starshipURL = "https://swapi.co/api/starships/?search=";
                 String planetsUrl = "https://swapi.co/api/planets/?search=";
 
-                System.out.println(categoryNo + "                   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 if (categoryNo == 2) {
                     String ship = starshipURL + et2.getText();
                     starshipPresenter.getSearchedStarship(ship);
+
                 } else if (categoryNo == 1) {
                     String personUrl = peopleURL + et2.getText();
                     peoplePresenter.getSearchedPerson(personUrl);
@@ -84,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
                 } else if (categoryNo == 3) {
                     String planetUrl = planetsUrl + et2.getText();
                     planetPresenter.getSearchedPlantet(planetUrl);
+
                 } else {
                     textViewResult.setText("chose category");
                 }
@@ -95,21 +104,15 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
 
     @Override
     public void starshipsReady(List<Starship> starships) {
-        textViewResult.setText("znaleziono " + starships.size() + "wyników");
-        ArrayList<ExampleItem> exampleItems = new ArrayList<>();
+        textViewResult.setText("found " + starships.size() + "ships");
         if (starships.size() == 0) {
-            textViewResult.setText("nic nie znaleziono");
+            textViewResult.setText("nothing to show");
         }
         for (Starship starship : starships) {
-            exampleItems.add(new ExampleItem(R.drawable.ic_star, starship.getName(), starship.getManufacturer()));
 
-            RecyclerView recyclerView = findViewById(R.id.recyclerView);
-            recyclerView.setHasFixedSize(true);
-            layoutManager = new LinearLayoutManager(this);
-            adapter = new SWAdapter(exampleItems);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
+            exampleItems.add(new ExampleItem(R.drawable.ic_star, starship.getName(), starship.getManufacturer()));
         }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -119,40 +122,27 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
 
     @Override
     public void peopleReady(List<People> people) {
-        textViewResult.setText("znaleziono " + people.size() + " wyników");
-        ArrayList<ExampleItem> exampleItems = new ArrayList<>();
+        textViewResult.setText("found " + people.size() + " poeple");
         if (people.size() == 0) {
-            textViewResult.setText("nic nie zaleziono");
-        } else {
-            for (People person : people) {
-
-                exampleItems.add(new ExampleItem(R.drawable.ic_star, person.getName(), person.getBirtYear()));
-
-                RecyclerView recyclerView = findViewById(R.id.recyclerView);
-                recyclerView.setHasFixedSize(true);
-                layoutManager = new LinearLayoutManager(this);
-                adapter = new SWAdapter(exampleItems);
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(adapter);
-            }
+            textViewResult.setText("nothing to show");
         }
+        for (People person : people) {
+
+            exampleItems.add(new ExampleItem(R.drawable.ic_star, person.getName(), person.getBirtYear()));
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void planestReady(List<Planet> planets) {
-        ArrayList<ExampleItem> exampleItems = new ArrayList<>();
-        textViewResult.setText("znaleziono " + planets.size() + " wyników");
+        textViewResult.setText("found " + planets.size() + " planets");
         if (planets.size() == 0) {
-            textViewResult.setText("nic nie znaleziono");
+            textViewResult.setText("nothing to show");
         }
         for (Planet planet : planets) {
             exampleItems.add(new ExampleItem(R.drawable.ic_star, planet.getName(), planet.getTerrain()));
-            RecyclerView recyclerView = findViewById(R.id.recyclerView);
-            recyclerView.setHasFixedSize(true);
-            layoutManager = new LinearLayoutManager(this);
-            adapter = new SWAdapter(exampleItems);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
+
         }
+        adapter.notifyDataSetChanged();
     }
 }
