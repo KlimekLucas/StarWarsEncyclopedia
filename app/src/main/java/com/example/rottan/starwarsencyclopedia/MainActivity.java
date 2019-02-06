@@ -107,12 +107,14 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
         textViewResult.setText("found " + starships.size() + "ships");
         if (starships.size() == 0) {
             textViewResult.setText("nothing to show");
-        }
-        for (Starship starship : starships) {
+        } else {
+            exampleItems.clear();
+            for (Starship starship : starships) {
 
-            exampleItems.add(new ExampleItem(R.drawable.ic_star, starship.getName(), starship.getManufacturer()));
+                exampleItems.add(new ExampleItem(R.drawable.ic_star, starship.getName(), starship.getManufacturer()));
+            }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -125,12 +127,14 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
         textViewResult.setText("found " + people.size() + " poeple");
         if (people.size() == 0) {
             textViewResult.setText("nothing to show");
-        }
-        for (People person : people) {
+        } else {
+            exampleItems.clear();
+            for (People person : people) {
 
-            exampleItems.add(new ExampleItem(R.drawable.ic_star, person.getName(), person.getBirtYear()));
+                exampleItems.add(new ExampleItem(R.drawable.ic_star, person.getName(), person.getBirtYear()));
+            }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -138,11 +142,13 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
         textViewResult.setText("found " + planets.size() + " planets");
         if (planets.size() == 0) {
             textViewResult.setText("nothing to show");
-        }
-        for (Planet planet : planets) {
-            exampleItems.add(new ExampleItem(R.drawable.ic_star, planet.getName(), planet.getTerrain()));
+        } else {
+            exampleItems.clear();
+            for (Planet planet : planets) {
+                exampleItems.add(new ExampleItem(R.drawable.ic_star, planet.getName(), planet.getTerrain()));
 
+            }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
     }
 }
