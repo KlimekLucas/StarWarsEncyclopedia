@@ -37,12 +37,7 @@ public class PeoplePresenter {
                     @Override
                     public void onResponse(Call<People> call, Response<People> response) {
                         People people = response.body();
-                        if (!response.isSuccessful() || people == null) {
 
-                            System.out.println(response.code());
-                            System.out.println(".......................................................response code");
-                            return;
-                        }
                         People personNew = new People();
                         personNew.setName(people.getName());
                         personNew.setGender(people.getGender());
@@ -71,12 +66,6 @@ public class PeoplePresenter {
                     @Override
                     public void onResponse(Call<PeopleSearchResult> call, Response<PeopleSearchResult> response) {
                         PeopleSearchResult peopleSearchResult = response.body();
-                        if (!response.isSuccessful() || peopleSearchResult == null || peopleSearchResult.getPerson().size() == 0) {
-
-                            System.out.println(response.code());
-                            System.out.println(".......................................................response code");
-                            return;
-                        }
                         List<People> result = new LinkedList<>();
                         result = peopleSearchResult.getPerson();
                         peopleView.peopleReady(result);

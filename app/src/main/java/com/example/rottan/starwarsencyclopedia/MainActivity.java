@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rottan.starwarsencyclopedia.Model.People;
 import com.example.rottan.starwarsencyclopedia.Model.Planet;
@@ -81,6 +82,13 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
                 String starshipURL = "https://swapi.co/api/starships/?search=";
                 String planetsUrl = "https://swapi.co/api/planets/?search=";
 
+                String pattern;
+                pattern = et2.getText().toString();
+                if (pattern.matches("")) {
+                    et2.setHint("what are you looking for ?");
+                    return;
+                }
+
                 if (categoryNo == 2) {
                     String ship = starshipURL + et2.getText();
                     starshipPresenter.getSearchedStarship(ship);
@@ -91,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
 
                 } else if (categoryNo == 3) {
                     String planetUrl = planetsUrl + et2.getText();
-                    planetPresenter.getSearchedPlantet(planetUrl);
+                    planetPresenter.getSearchedPlanet(planetUrl);
 
                 } else {
                     textViewResult.setText("chose category");
@@ -104,8 +112,12 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
 
     @Override
     public void starshipsReady(List<Starship> starships) {
-        textViewResult.setText("found " + starships.size() + "ships");
-        if (starships.size() == 0) {
+        if (starships.size() > 1) {
+            textViewResult.setText("found " + starships.size() + " ships");
+        } else {
+            textViewResult.setText("found " + starships.size() + " ship");
+        }
+        if (starships.isEmpty()) {
             textViewResult.setText("nothing to show");
         } else {
             exampleItems.clear();
@@ -124,9 +136,14 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
 
     @Override
     public void peopleReady(List<People> people) {
-        textViewResult.setText("found " + people.size() + " poeple");
-        if (people.size() == 0) {
+        if (people.size() > 1) {
+            textViewResult.setText("found " + people.size() + " people");
+        }else{
+            textViewResult.setText("found " + people.size() + " person");
+        }
+        if (people.isEmpty()) {
             textViewResult.setText("nothing to show");
+            exampleItems.clear();
         } else {
             exampleItems.clear();
             for (People person : people) {
@@ -138,9 +155,13 @@ public class MainActivity extends AppCompatActivity implements StarshipsView, Pe
     }
 
     @Override
-    public void planestReady(List<Planet> planets) {
-        textViewResult.setText("found " + planets.size() + " planets");
-        if (planets.size() == 0) {
+    public void planetsReady(List<Planet> planets) {
+        if (planets.size() > 1) {
+            textViewResult.setText("found " + planets.size() + " planets");
+        }else {
+            textViewResult.setText("found " + planets.size() + " planet");
+        }
+        if (planets.isEmpty()) {
             textViewResult.setText("nothing to show");
         } else {
             exampleItems.clear();

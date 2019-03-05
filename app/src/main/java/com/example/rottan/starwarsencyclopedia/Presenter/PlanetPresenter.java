@@ -1,5 +1,7 @@
 package com.example.rottan.starwarsencyclopedia.Presenter;
 
+import android.widget.Toast;
+
 import com.example.rottan.starwarsencyclopedia.Controller.PlanetController;
 import com.example.rottan.starwarsencyclopedia.Model.Planet;
 import com.example.rottan.starwarsencyclopedia.Model.PlanetSearchResult;
@@ -28,7 +30,7 @@ public class PlanetPresenter {
         }
     }
 
-    public void getSearchedPlantet(String url) {
+    public void getSearchedPlanet(String url) {
         planetService
                 .getAPI()
                 .getSearchedPlanets(url)
@@ -36,14 +38,9 @@ public class PlanetPresenter {
                     @Override
                     public void onResponse(Call<PlanetSearchResult> call, Response<PlanetSearchResult> response) {
                         PlanetSearchResult planetSearchResult = response.body();
-                        if (!response.isSuccessful()) {
-                            System.out.println(response.code());
-                            System.out.println(".......................................................response code");
-                            return;
-                        }
                         List<Planet> result = new LinkedList<>();
                         result = planetSearchResult.getPlanet();
-                        planetsView.planestReady(result);
+                        planetsView.planetsReady(result);
                     }
 
                     @Override

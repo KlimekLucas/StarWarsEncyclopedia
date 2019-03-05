@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface PlanetsView {
 
-    void planestReady(List<Planet> planets);
+    void planetsReady(List<Planet> planets);
 }

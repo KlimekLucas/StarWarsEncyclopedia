@@ -1,7 +1,6 @@
 package com.example.rottan.starwarsencyclopedia.Presenter;
 
 import com.example.rottan.starwarsencyclopedia.Controller.StarshipsController;
-import com.example.rottan.starwarsencyclopedia.Model.PeopleSearchResult;
 import com.example.rottan.starwarsencyclopedia.Model.Starship;
 import com.example.rottan.starwarsencyclopedia.Model.StarshipSearchResult;
 import com.example.rottan.starwarsencyclopedia.Service.StarshipsService;
@@ -75,12 +74,7 @@ public class StarshipPresenter {
                     @Override
                     public void onResponse(Call<StarshipSearchResult> call, Response<StarshipSearchResult> response) {
                         StarshipSearchResult starshipSearchResult = response.body();
-                        if (!response.isSuccessful() || starshipSearchResult == null || starshipSearchResult.getStarship().size() == 0) {
 
-                            System.out.println(response.code());
-                            System.out.println(".......................................................response code");
-                            return;
-                        }
                         List<Starship> result = new LinkedList<>();
                         result = starshipSearchResult.getStarship();
                         starshipsView.starshipsReady(result);
